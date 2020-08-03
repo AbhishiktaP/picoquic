@@ -2222,7 +2222,7 @@ int picoquic_check_frame_needs_repeat(picoquic_cnx_t* cnx, uint8_t* bytes,
                 else {
                     /* Check whether the ack was already received */
                     if(picoquic_check_sack_list(&stream->first_sack_item, offset, offset + data_length)==-1)
-                    *no_need_to_repeat = 0;
+                    *no_need_to_repeat = 1;
                 }
             }
         }
