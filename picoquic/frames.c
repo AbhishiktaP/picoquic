@@ -2220,6 +2220,12 @@ int picoquic_check_frame_needs_repeat(picoquic_cnx_t* cnx, uint8_t* bytes,
                     *no_need_to_repeat = 1;
                 }
                 else {
+                    /* simulate acknowledgement of the stream up to offset = X */
+                    stream = picoquic_find_stream(cnx, stream_id);
+                    if (stream != NULL) {
+                    (void)picoquic_update_sack_list(&stream->first_sack_item, 0, offset-1);
+                    picoquic_delete_stream_if_closed(cnx, stream);
+        }
                     /* Check whether the ack was already received */
                     if(picoquic_check_sack_list(&stream->first_sack_item, offset, offset + data_length)==-1)
                     *no_need_to_repeat = 1;
